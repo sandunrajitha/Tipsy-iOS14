@@ -12,14 +12,17 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var tipValueText: UILabel!
     @IBOutlet weak var descriptionText: UILabel!
     
+    var tip: Tip?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        tipValueText.text = String(format: "%.2f", tip?.tipValue ?? 0.00)
+        descriptionText.text = "Split between \(tip?.split ?? 0) people, with \(tip?.percentage ?? 0)% tip."
     }
     
     @IBAction func recalculateButtonPressed(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     /*

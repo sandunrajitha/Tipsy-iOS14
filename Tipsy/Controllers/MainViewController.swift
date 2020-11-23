@@ -18,13 +18,13 @@ class MainViewController: UIViewController {
     @IBOutlet weak var splitStepper: UIStepper!
     
     var billTotal: Double = 0.0
-    var percentage: Int = 0
+    var percentage: Int = 10
     var split: Int = 0
     var tip: Tip?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        billTotalText.becomeFirstResponder()
     }
 
     @IBAction func percentageSelected(_ sender: UIButton) {
@@ -34,15 +34,27 @@ class MainViewController: UIViewController {
     
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        print(sender.currentTitle ?? "calculatePressed")
         billTotal = Double(billTotalText.text ??  "0.00") ??  0.00
+        split = Int(splitStepper.value)
+        
+        var tipCalculator = TipCalculator(billTotal, percentage, split)
+        tip = tipCalculator.calculateTip()
+        self.performSegue(withIdentifier: "showResult", sender: self)
     }
     
     @IBAction func splitStepperPressed(_ sender: UIStepper) {
         billTotalText.resignFirstResponder()
         splitLabel.text = String(format: "%.0f", sender.value)
     }
-    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "showResult"{
+            let resultVC = segue.destination as! ResultViewController
+            resultVC.tip = self.tip
+        }
+    }
     
     func percentageButton(_ sender: UIButton) {
         if sender.currentTitle == "0%" {
