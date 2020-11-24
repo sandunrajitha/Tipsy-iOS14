@@ -1,6 +1,4 @@
-#  BMI Calculator
-
-Bill splitting and tip calculating app
+#  Bill splitting and tip calculating app
 
 ## Goal
 
